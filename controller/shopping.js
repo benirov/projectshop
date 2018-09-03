@@ -4,9 +4,7 @@ const Shopping = require('../model/shopping')
 
 function getShopping(req, res)
 {
-	// console.log(req)
-
-	Shopping.find({}, (error, shopping) =>
+	Shopping.find({}).sort({date: -1}).exec((error, shopping) =>
 	{
 
 		if(error)

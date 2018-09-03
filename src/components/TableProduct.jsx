@@ -72,9 +72,6 @@ function TableProduct(props) {
                 }
                 
               })
-
-              
-            
           }
         </TableBody>
       </Table>

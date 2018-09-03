@@ -52,7 +52,7 @@ button: {
   },
 })
 
-class TableProduct extends Component  
+class CheckOut extends Component  
 {
 
   constructor(...props)
@@ -63,6 +63,7 @@ class TableProduct extends Component
     this.OnCliAddProduct = this.OnCliAddProduct.bind(this)
     this.buyProduct = this.buyProduct.bind(this)
     this.back = this.back.bind(this)
+    this.shopping = this.shopping.bind(this)
     
   }
 
@@ -75,25 +76,25 @@ class TableProduct extends Component
       {
         case 1:
         
-        dataTable.map((row, i) => {
-            if(row)
-            {
-              price =  Number(price)+Number(row.price)
-            }
-          })
-        return price
+          dataTable.map((row, i) => {
+              if(row)
+              {
+                price =  Number(price)+Number(row.price)
+              }
+            })
+          return price
         break;
 
         case 0:
          
-        let table  = document.querySelector('.tableCheckOut').childNodes[1].childNodes
-        console.log(table);
+          let table  = document.querySelector('.tableCheckOut').childNodes[1].childNodes
+          console.log(table);
 
-        table.forEach((row, i) => {
-              price =  Number(price)+Number(row.childNodes[2].innerHTML)
-            
-          })
-        return price
+          table.forEach((row, i) => {
+                price =  Number(price)+Number(row.childNodes[2].innerHTML)
+              
+            })
+          return price
         break;
       }
         
@@ -115,8 +116,6 @@ class TableProduct extends Component
         }
       break;
     }
-
-    
     document.getElementById('total').innerHTML = this.addTotal([], 0)
   }
 
@@ -137,19 +136,16 @@ class TableProduct extends Component
     let dataProduct = []
     let total = ''
     let table  = document.querySelector('.tableCheckOut').childNodes[1].childNodes
-        console.log(table);
-
-        table.forEach((row, i) => {
-          console.log(row.childNodes[1].innerHTML)
-              dataProduct.push(
-              {
-                id: row.childNodes[0].getAttribute('data-id'),
-                name: row.childNodes[0].innerHTML,
-                quantity: Number(row.childNodes[1].innerHTML),
-                price: Number(row.childNodes[3].innerHTML)
-              })
-            
-          })
+    table.forEach((row, i) => {
+        dataProduct.push(
+        {
+          id: row.childNodes[0].getAttribute('data-id'),
+          name: row.childNodes[0].innerHTML,
+          quantity: Number(row.childNodes[1].innerHTML),
+          price: Number(row.childNodes[3].innerHTML)
+        })
+        
+      })
 
         data.total = document.getElementById('total').innerHTML
         data.product = dataProduct
@@ -160,14 +156,10 @@ class TableProduct extends Component
             'Content-Type': 'application/json'
           }
         }).then(res => res.json())
-          .catch(error => console.error('Error:', error))
+          .catch(error => openSnackbar({ message: 'Error al realizar comprar.' }))
           .then((response) => 
           {
-            console.log(response)
-              console.log('Success:', response); 
-              // this.setState({open: true})
               openSnackbar({ message: 'Compra exitosa.' });
-            
           })
   }
 
@@ -178,6 +170,16 @@ class TableProduct extends Component
       state: { dataTable: this.props.history.location.state.dataTable }
     })
   }
+
+shopping()
+{
+    this.props.history.push({
+      pathname: '/viewshopping',
+      state: { dataTable: this.props.history.location.state.dataTable }
+    })
+  }
+
+  
   
   render() {
     const { classes } = this.props
@@ -195,6 +197,11 @@ class TableProduct extends Component
           back
         </Button>
       </Grid>
+      <Grid container justify="flex-start" className={classes.padding}>
+        <Button size="small" color="primary" onClick={this.shopping}>
+          view shopping
+        </Button>
+      </Grid>
       <Grid item xs={12} sm={6}>
       <Table className={classes.table} className="tableCheckOut">
         <TableHead>
@@ -207,35 +214,31 @@ class TableProduct extends Component
         </TableHead>
         <TableBody>
         {
-            
-              this.props.history.location.state.dataTable.map((row, i) => {
-                
-                if(row)
-                {
-                    return (
-                    <TableRow key={row.id} id={row.id}>
-                      <TableCell component="th" scope="row" data-id={row.id}>
-                        {row.name}
-                      </TableCell>
-                      <TableCell numeric>{row.quantity}</TableCell>
-                      <TableCell numeric>{row.price}</TableCell>
-                      <TableCell className={classes.hidden}>{row.price}</TableCell>
-                      <TableCell>
-                      <IconButton id="btnAdd" className={classes.button} aria-label="Add">
-                        <div onClick={(e) => this.OnCliAddProduct(row.id, 1)}><AddCircle /></div>
-                      </IconButton>
-                      <IconButton id="btnDelete"className={classes.button} aria-label="Delete">
-                        <div onClick={(e) => this.OnCliAddProduct(row.id, 0)}><Remove /></div>
-                      </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  )
-                }
-                
-              })
-
+            this.props.history.location.state.dataTable.map((row, i) => {
               
-            
+              if(row)
+              {
+                  return (
+                  <TableRow key={row.id} id={row.id}>
+                    <TableCell component="th" scope="row" data-id={row.id}>
+                      {row.name}
+                    </TableCell>
+                    <TableCell numeric>{row.quantity}</TableCell>
+                    <TableCell numeric>{row.price}</TableCell>
+                    <TableCell className={classes.hidden}>{row.price}</TableCell>
+                    <TableCell>
+                    <IconButton id="btnAdd" className={classes.button} aria-label="Add">
+                      <div onClick={(e) => this.OnCliAddProduct(row.id, 1)}><AddCircle /></div>
+                    </IconButton>
+                    <IconButton id="btnDelete"className={classes.button} aria-label="Delete">
+                      <div onClick={(e) => this.OnCliAddProduct(row.id, 0)}><Remove /></div>
+                    </IconButton>
+                    </TableCell>
+                  </TableRow>
+                )
+              }
+              
+            }) 
           }
         </TableBody>
       </Table>
@@ -252,7 +255,6 @@ class TableProduct extends Component
       </Grid>
     </div>
     <div>
-
       <Grid container justify="center">
         <Button size="small" color="primary" onClick={this.buyProduct}>
           Buy
@@ -260,9 +262,8 @@ class TableProduct extends Component
       </Grid>
     </div>
     </div>
-    
   );
   }
 }
 
-export default withStyles(styles)(TableProduct);
+export default withStyles(styles)(CheckOut);

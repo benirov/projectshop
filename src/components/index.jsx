@@ -68,8 +68,6 @@ class App extends Component
 		 	{
 		 			console.log(element)
 		 	})
-
-		 // this.props.history.push("/checkout");
 		 this.props.history.push({
 		  pathname: '/checkout',
 		  state: { dataTable: this.state.dataTable }
