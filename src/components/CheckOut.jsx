@@ -86,13 +86,9 @@ class CheckOut extends Component
         break;
 
         case 0:
-         
           let table  = document.querySelector('.tableCheckOut').childNodes[1].childNodes
-          console.log(table);
-
           table.forEach((row, i) => {
                 price =  Number(price)+Number(row.childNodes[2].innerHTML)
-              
             })
           return price
         break;

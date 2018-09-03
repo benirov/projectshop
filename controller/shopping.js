@@ -13,7 +13,6 @@ function getShopping(req, res)
 		}
 		else if(!shopping || shopping == '')
 		{
-			console.log(shopping)
 			return res.status(404).send({messaje: `No existen compras en la base de datos`})
 		}
 		else

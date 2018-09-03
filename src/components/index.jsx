@@ -63,17 +63,10 @@ class App extends Component
 
 	handleOnClickCheckOut(e)
 	{
-		 let table = document.querySelector('.tableCar').childNodes[1].childNodes
-		 table.forEach((element, index) =>
-		 	{
-		 			console.log(element)
-		 	})
 		 this.props.history.push({
 		  pathname: '/checkout',
 		  state: { dataTable: this.state.dataTable }
 		})
-		 // console.log(table)
-
 	}
 	render(){
 		return (

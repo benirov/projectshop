@@ -24,17 +24,13 @@ const styles = theme => ({
 
 function addTotal(dataTable)
 {
-  console.log(dataTable)
     let price = ''
     dataTable.map((row, i) => {
         if(row)
         {
-          console.log(row)
-          price =  Number(price)+Number(row.price)
-          console.log(price)
+          price =  Number(price)+Number(row.price)          
         }
-      })
-      console.log(price)
+      })      
     return price
 }
 
@@ -55,9 +51,7 @@ function TableProduct(props) {
         </TableHead>
         <TableBody>
           {
-            
               props.dataTable.map((row, i) => {
-                console.log(row)
                 if(row)
                 {
                     return (
