@@ -16,7 +16,7 @@ import Icon from '@material-ui/core/Icon'
 import red from '@material-ui/core/colors/red'
 import classNames from 'classnames'
 import IconButton from '@material-ui/core/IconButton'
-import AlertDialog from './AlertDialog'
+import AlertDialog, {openSnackbar} from './AlertDialog'
 import Header from './Header';
 
 
@@ -52,7 +52,7 @@ button: {
   },
 })
 
-class TableProduct extends Component 
+class TableProduct extends Component  
 {
 
   constructor(...props)
@@ -165,7 +165,8 @@ class TableProduct extends Component
           {
             console.log(response)
               console.log('Success:', response); 
-              this.setState({open: true})
+              // this.setState({open: true})
+              openSnackbar({ message: 'Compra exitosa.' });
             
           })
   }

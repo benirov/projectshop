@@ -1,55 +1,57 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types'
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import React from 'react';
+import Snackbar from '@material-ui/core/Snackbar';
 
+let openSnackbar;
 
-export  default class AlertDialog extends Component 
-{
+class Notifier extends React.Component {
+  state = {
+    open: false,
+    message: '',
+  };
 
-  constructor(...props)
-  {
-    super(...props)
-    this.state = {open : false}
-
-    this.handleClose = this.handleClose.bind(this)
+  componentDidMount() {
+    openSnackbar = this.openSnackbar;
   }
 
-    handleClickOpen = () => {
-    this.setState({ open: true });
-    };
+  openSnackbar = ({ message }) => {
+    this.setState({
+      open: true,
+      message,
+    });
+  };
 
-    handleClose = () => {
-      this.setState({ open: false });
-    };
-  
+  handleSnackbarClose = () => {
+    this.setState({
+      open: false,
+      message: '',
+    });
+  };
+
   render() {
+    const message = (
+      <span
+        id="snackbar-message-id"
+        dangerouslySetInnerHTML={{ __html: this.state.message }}
+      />
+    );
+
     return (
-      <div>
-        <Button >Open alert dialog</Button>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">{"Producto guardado"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button color="primary" autoFocus onClick={this.handleClose}>
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        message={message}
+        autoHideDuration={3000}
+        onClose={this.handleSnackbarClose}
+        open={this.state.open}
+        SnackbarContentProps={{
+          'aria-describedby': 'snackbar-message-id',
+        }}
+      />
     );
   }
 }
+
+export function openSnackbar({ message }) {
+  openSnackbar({ message });
+}
+
+export default Notifier;
